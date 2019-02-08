@@ -33,5 +33,5 @@ int main()
   
    if(g1.compare(g2))std::cout << "graph is isomorphic" << std::endl;
 	 else std::cout << "graph is not isomorphic" << std::endl;
-
+  int i;
 }

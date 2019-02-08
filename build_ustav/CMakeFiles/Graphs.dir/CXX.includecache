@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mith/Dropbox/zdrojaky/graphs/Graph.cpp
+Graph.h
+/home/mith/Dropbox/zdrojaky/graphs/Graph.h
+map
+-
+stack
+-
+algorithm
+-
+iterator
+-
+string
+-
+
+/home/mith/Dropbox/zdrojaky/graphs/Graph.h
+vector
+-
+set
+-
+iostream
+-
+memory
+-
+iostream
+-
+

@@ -1,0 +1,12 @@
+﻿  Graph.cpp
+c:\users\mith1\source\repos\graphs\graph.cpp(64): warning C4018: '<': signed/unsigned mismatch
+c:\users\mith1\source\repos\graphs\graph.cpp(195): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+c:\users\mith1\source\repos\graphs\topology.hpp(404): warning C4099: 'AdjacentEdges': type name first seen using 'class' now seen using 'struct'
+  c:\users\mith1\source\repos\graphs\topology.hpp(403): note: see declaration of 'AdjacentEdges'
+c:\users\mith1\source\repos\graphs\topology.hpp(422): warning C4099: 'AdjacentNodes': type name first seen using 'class' now seen using 'struct'
+  c:\users\mith1\source\repos\graphs\topology.hpp(421): note: see declaration of 'AdjacentNodes'
+c:\users\mith1\source\repos\graphs\topology.hpp(442): warning C4099: 'TopologyComponent': type name first seen using 'class' now seen using 'struct'
+  c:\users\mith1\source\repos\graphs\topology.hpp(441): note: see declaration of 'TopologyComponent'
+  Generating Code...
+  graphs.vcxproj -> C:\Users\mith1\source\repos\graphs\Debug\graphs.exe

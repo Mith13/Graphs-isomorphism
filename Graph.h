@@ -19,7 +19,6 @@ public:
 	partition::iterator m_it_target_set;
 	set<int>::iterator m_it_target_vertex;
 	vector<std::shared_ptr<TreeNode>>m_child;
-
 };
 
 class Graph
@@ -34,7 +33,7 @@ public:
 	void createCanonicalLabel();
 	void printAdjacencyMatrix() const;
 
-	bool compare(Graph& rhs) const;
+	bool compare(Graph& rhs);
 
 	int getVertices() const { return m_adjacent_list.size(); }
 	

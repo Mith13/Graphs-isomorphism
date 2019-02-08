@@ -26,10 +26,16 @@ void printSet(set<int> set, std::string s = "")
 }
 Graph::Graph(const Graph & g)
 {
+	m_adjacency_matrix=g.m_adjacency_matrix;
+	m_adjacent_list=g.m_adjacent_list;
+	m_canonical_label=g.m_canonical_label;
 }
 
 Graph::Graph(const Graph && g)
 {
+	m_adjacency_matrix=g.m_adjacency_matrix;
+	m_adjacent_list=g.m_adjacent_list;
+	m_canonical_label=g.m_canonical_label;
 }
 
 void Graph::insertEdge(int a1, int a2)
@@ -45,24 +51,28 @@ void Graph::insertEdge(int a1, int a2)
 	m_canonical_label.clear();
 
 }
-bool Graph::compare(Graph& rhs) const{
+bool Graph::compare(Graph& rhs){
+	createCanonicalLabel();
+	rhs.createCanonicalLabel();
 	return(lesser_permutation(m_canonical_label,rhs.m_canonical_label)==0);
 }
 void Graph::createCanonicalLabel()
 {
-	vector<vector<int>> permutations(std::move(findIsomorphisms()));
-	vector<int> perm=permutations[0];
-	for(auto it_perm=permutations.begin()+1;it_perm!=permutations.end();it_perm++){
-		if(lesser_permutation(*it_perm,perm)<0){
-			perm=*it_perm;
+	if(m_canonical_label.empty()){
+		vector<vector<int>> permutations=findIsomorphisms();
+		vector<int> perm=permutations[0];
+		for(auto it_perm=permutations.begin()+1;it_perm!=permutations.end();it_perm++){
+			if(lesser_permutation(*it_perm,perm)<0){
+				perm=*it_perm;
+			}
 		}
+		m_canonical_label=perm;
 	}
-	m_canonical_label=perm;
 }
 int Graph::lesser_permutation(const vector<int>& perm1,const vector<int>& perm2)const 
 {
-	for(int i=0;i<perm1.size();i++){
-		for(int j=0;i<=j;j++){
+	for(int i=0;i<getVertices();i++){
+		for(int j=0;j<=i;j++){
 			int a1=m_adjacency_matrix[perm1[i]][perm1[j]];
 			int a2=m_adjacency_matrix[perm2[i]][perm2[j]];
 			if(a1!=a2)return a1-a2;
@@ -87,7 +97,7 @@ vector<vector<int>> Graph::findIsomorphisms() const
 	vector<vector<int>> permutations;
 	//if there are too many nodes, do iterative approach
 	//else we can do it recursively.
-	if (getVertices() > 6) {
+	if (getVertices() > 2) {
 		std::stack<std::shared_ptr<TreeNode>> tree;
 		auto root = std::make_shared<TreeNode>(equitable_partition);
 		root->m_it_target_set = root->m_data.begin();
