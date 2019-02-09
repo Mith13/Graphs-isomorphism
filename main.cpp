@@ -1,10 +1,4 @@
-#include "Topology.hpp"
 #include "Graph.h"
-#include <map>
-#include <memory>
-using std::cout;
-using std::endl;
-
 
 int main()
 {
@@ -33,5 +27,5 @@ int main()
   
    if(g1.compare(g2))std::cout << "graph is isomorphic" << std::endl;
 	 else std::cout << "graph is not isomorphic" << std::endl;
-  int i;
+  
 }
