@@ -25,6 +25,8 @@ g1.insertEdge(4,7);
 if(g1.isIsomoprhic(g2))std::cout << "graph is isomorphic" << std::endl;
 else std::cout << "graph is not isomorphic" << std::endl;
 ```
+## Author
+Jakub Lang
 
 ## License
 
