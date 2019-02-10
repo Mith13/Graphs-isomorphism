@@ -9,18 +9,28 @@ using std::map;
 inline
 void printSet(partition set, std::string s = "")
 {
-	std::cout << s;
+	std::cout << s<<std::endl;
 	for (auto s : set) {
-		std::cout << std::endl;
+		std::cout << "{";
 		for (auto e : s) {
 			std::cout << " " << e + 1;
 		}
+		std::cout << " }";
 	}
 	std::cout << std::endl;
 }
 // Prints only a set inside some partition 
 inline
 void printSet(set<int> set, std::string s = "")
+{
+	std::cout << s<<std::endl;
+	for (auto s : set) {
+			std::cout << " " << s + 1;
+	}
+	std::cout << std::endl;
+}
+inline
+void printSet2(vector<int> set, std::string s = "")
 {
 	std::cout << s;
 	for (auto s : set) {
@@ -52,6 +62,8 @@ void Graph::insertEdge(int a1, int a2)
 		std::cerr << "Problem";
 		abort();
 	}
+	a1--;
+	a2--;
 	m_adjacent_list[a1].insert(a2);
 	m_adjacent_list[a2].insert(a1);
 	m_adjacency_matrix[a1][a2]++;
@@ -63,7 +75,7 @@ void Graph::insertEdge(int a1, int a2)
 // Compares a graph with another
 // Returns true if two graphs are isomorphic,
 // otherwise false
-bool Graph::compare(Graph& rhs){
+bool Graph::isIsomoprhic(Graph& rhs){
 	createCanonicalLabel();
 	rhs.createCanonicalLabel();
 	for (int i = 0; i < getVertices(); i++) {
@@ -93,6 +105,7 @@ void Graph::createCanonicalLabel()
 		}
 		m_canonical_label=perm;
 	}
+	printSet2(m_canonical_label,"Canonical");
 }
 
 // Compares permuted elements of the adjacency matrix and returns the difference between the two
@@ -118,16 +131,26 @@ partition Graph::equipartition() const
 	colouring_out.push_back(all_nodes);
 	colouring_wrk.push_back(all_nodes);
 	refineColouring(colouring_out, colouring_wrk);
+	printSet(colouring_out,"Equitable");
+	//abort();
 	return colouring_out;
 }
 
 // Returns all possible isomorphic permutations or vertices
 vector<vector<int>> Graph::findIsomorphisms() const
 {
-	// Do first splitting with equipartition()
-	partition equitable_partition = equipartition();
+
 	vector<vector<int>> permutations; // container for all permutations
-	//if there are too many nodes, do iterative approach
+	vector<int> permutation;
+	// Do first splitting with equipartition()
+	partition equitable_partition = equipartition(); 
+	if (equitable_partition.size() == getVertices()) {
+		for(const auto& set:equitable_partition)
+			for(const auto& vertex:set)
+			permutation.push_back(vertex);
+		permutations.push_back(permutation);
+		return permutations;
+	}//if there are too many nodes, do iterative approach
 	//else we can do it recursively.
 	if (getVertices() > 2) {
 		std::stack<std::shared_ptr<TreeNode>> tree; //stack for iterative solution
@@ -135,16 +158,14 @@ vector<vector<int>> Graph::findIsomorphisms() const
 		//Set up the root node
 		// set m_it_target_set to first set with more than one vertex
 		// and set m_it_target_vertex to first vertex of said set
-		root->m_it_target_set = root->m_data.begin();
 		for (root->m_it_target_set = root->m_data.begin(); root->m_it_target_set->size() == 1;
 			++root->m_it_target_set++) {}
 		root->m_it_target_vertex = root->m_it_target_set->begin();
 		tree.push(root);
-		vector<int> permutation;
 		while(!(permutation=next_permutation(tree)).empty()){
 			permutations.push_back(permutation);
-			//for(auto i:permutation)std::cout<<i<<" ";
-			//std::cout<<std::endl;
+			for(auto i:permutation)std::cout<<i<<" ";
+			std::cout<<std::endl;
 		}
 		return permutations;
 	}
@@ -184,16 +205,18 @@ vector<int> Graph::next_permutation(std::stack<std::shared_ptr<TreeNode>>& tree)
                     {return s != *parent->m_it_target_set; });
                     
 			// Split target set to singleton partition containing target vertex and rest of set
-            set<int>tmp;
-			std::copy_if(parent->m_it_target_set->begin(),parent->m_it_target_set->end(),
-				std::inserter(tmp, tmp.end()),[&](const int i)
-                    {return i !=*(parent->m_it_target_vertex);});
-
+			set<int>tmp;
+			if(parent->m_it_target_set->size()>1){            
+				std::copy_if(parent->m_it_target_set->begin(),parent->m_it_target_set->end(),
+					std::inserter(tmp, tmp.end()),[&](const int i)
+                    	{return i !=*(parent->m_it_target_vertex);});
+			}
             set<int> single_colour_set{*parent->m_it_target_vertex};
 			partition single_colour_partition;
 			single_colour_partition.push_back(single_colour_set);
 			// Insert splitted target set into current partition
 			colouring_out.insert(colouring_out.begin()+(parent->m_it_target_set-parent->m_data.begin()),{ {single_colour_set}, {tmp} });
+			//printSet(colouring_out);
 			
 			//Move current partition to child member partition
 			std::shared_ptr<TreeNode> child=std::make_shared<TreeNode>(std::move(colouring_out));
@@ -254,12 +277,27 @@ bool Graph::refineColouring(partition& colouring_out, partition& colouring_wrk) 
 	if (colouring_out.size() == getVertices()) return true;
 	
 	while(!colouring_wrk.empty()){
-		auto spliting_set=colouring_wrk.back();
-		colouring_wrk.pop_back();
-
+		
 		//printSet(colouring_out, "Partition ");
 		//printSet(colouring_wrk, "Active ");
 		//printSet(spliting_set, "splitting set ");
+		// According to McKay paper its best to chose single vertex set 
+		/*set<int> spliting_set;
+		if(colouring_wrk.size()==1){
+			spliting_set=colouring_wrk[0];
+			colouring_wrk.pop_back();
+		}
+		else {			
+			partition::iterator it_set;
+			for(it_set=colouring_wrk.begin();it_set->size()==1;it_set++){
+				spliting_set.insert(it_set->begin(),it_set->end());
+			}			
+			colouring_wrk.erase(it_set);
+		}*/
+		// Old code		
+		auto spliting_set=colouring_wrk.back();
+		colouring_wrk.pop_back();
+
 
 		for(int i=0;i<colouring_out.size();i++){
 			auto& split_set=colouring_out[i];
@@ -269,12 +307,12 @@ bool Graph::refineColouring(partition& colouring_out, partition& colouring_wrk) 
 				//printSet(split_set, "Splitting this set");
 				// map sets according their edge degree
 				map<PseudoEdge, set<int>> quasicolouring;
-				for (const auto& node_in_split : split_set) {		
+				for (const auto& vertex_in_split : split_set) {		
 					PseudoEdge degree;
-					for (const auto& splitting_node : spliting_set) {
-						degree +=(m_adjacency_matrix[node_in_split][splitting_node]);						
+					for (const auto& splitting_vertex : spliting_set) {
+						degree +=(m_adjacency_matrix[vertex_in_split][splitting_vertex]);						
 					}
-					quasicolouring[degree].insert(node_in_split);
+					quasicolouring[degree].insert(vertex_in_split);
 				}
 				/*for (auto i : quasicolouring) {
 					std::cout << "Key: [" << i.first << "] ";
@@ -299,7 +337,7 @@ bool Graph::refineColouring(partition& colouring_out, partition& colouring_wrk) 
 				//printSet(biggest_set->second, "biggest set");
 					
 				partition tmp;
-				for(auto it=quasicolouring.begin();it!=quasicolouring.end();it++){
+				for(auto it=quasicolouring.rbegin();it!=quasicolouring.rend();it++){
 					tmp.push_back(it->second);
 					if (biggest_set->second != it->second) {
 						//add rest of parttioned split_set to splitting_sets
@@ -330,7 +368,7 @@ Graph::~Graph()
 
 //Custom comparator for PseudoEdge class
 bool operator <(const PseudoEdge& lhs, const PseudoEdge& rhs) noexcept{
-		if (lhs.m_nodes >= rhs.m_nodes)return false;
-		if (lhs.m_degree >= rhs.m_degree) return false;
-		return true;
+		if (lhs.m_nodes != rhs.m_nodes)return lhs.m_nodes<rhs.m_nodes;
+		if (lhs.m_degree != rhs.m_degree) return lhs.m_degree<rhs.m_degree;
+		return lhs.m_node_types<rhs.m_node_types;
 }

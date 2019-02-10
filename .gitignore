@@ -3,3 +3,13 @@
 ################################################################################
 
 /.vs/graphs/v15
+/.vscode
+/build
+/build_ustav
+/Debug
+*.vcxproj
+*.user
+*.filters
+*.sln
+/Topology.hpp
+/Topology.cpp

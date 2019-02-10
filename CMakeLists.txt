@@ -4,7 +4,7 @@ project(Graphs VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(Graphs main.cpp Topology.cpp Graph.cpp)
+add_executable(Graphs main.cpp Graph.cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

@@ -16,12 +16,14 @@ using partition=vector<set<int>>;
 class PseudoEdge
 {
 public:
-	PseudoEdge() :m_degree(0), m_nodes(0) {};
+	PseudoEdge() :m_degree(0), m_nodes(0),m_node_types() {};
 	int m_degree;
 	int m_nodes;
-	PseudoEdge& operator +=(const int& i) {
-		m_degree += i;
+	set<int> m_node_types;
+	PseudoEdge& operator +=(const int& e) {
+		m_degree += e;
 		m_nodes++;
+		if (e != 0) m_node_types.insert(e);
 		return *this;
 	}	
 };
@@ -51,7 +53,7 @@ public:
 	void createCanonicalLabel();
 	void printAdjacencyMatrix() const;
 
-	bool compare(Graph& rhs);
+	bool isIsomoprhic(Graph& rhs);
 
 	int getVertices() const { return m_adjacent_list.size(); }
 	int getAdjacency(int i, int j) const { return m_adjacency_matrix[i][j];}
