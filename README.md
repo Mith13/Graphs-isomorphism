@@ -4,7 +4,7 @@ Testing implementation of searching for all graph isomorphisms of hugenholtz dia
 Use the ideas of Mckay and his practical graph isomorphism algorithm without any automorphism pruning
 see (<a href="https://arxiv.org/pdf/1301.1493.pdf" target="_blank">`arXiv:1301.1493`</a>)
 
-## Example (Optional)
+## Example 
 
 ```c++
 
