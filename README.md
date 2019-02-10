@@ -1,8 +1,10 @@
 # Graphs-isomorphism
 
-Testing implementation of searching for all graph isomorphisms of hugenholtz diagrams.
-Use the ideas of Mckay and his practical graph isomorphism algorithm without any automorphism pruning
-see (<a href="https://arxiv.org/pdf/1301.1493.pdf" target="_blank">`arXiv:1301.1493`</a>)
+Testing implementation of searching for all graph isomorphisms of Hugenholtz diagrams.
+Use the ideas of McKay and his practical graph isomorphism algorithm without any automorphism pruning
+see (<a href="https://arxiv.org/pdf/1301.1493.pdf" target="_blank">`arXiv:1301.1493`</a>).
+One difference is the estimation of number of degrees because Hugenholtz diagrams can have multiple edges for the same
+pair of vertices. The PseudoEdge class was created because of this see (Graph.h).
 
 ## Example 
 
