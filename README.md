@@ -10,7 +10,7 @@ pair of vertices. The PseudoEdge class was created because of this see (Graph.h)
 
 ```c++
 
-Graph g(7); //five vertices
+Graph g(7); //seven vertices
 
 g1.insertEdge(1,2);
 g1.insertEdge(1,4);
