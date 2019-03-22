@@ -277,7 +277,7 @@ bool Graph::refineColouring(partition& colouring_out, partition& colouring_wrk) 
 	if (colouring_out.size() == getVertices()) return true;
 	
 	while(!colouring_wrk.empty()){
-		
+		//Old code
 		//printSet(colouring_out, "Partition ");
 		//printSet(colouring_wrk, "Active ");
 		//printSet(spliting_set, "splitting set ");
