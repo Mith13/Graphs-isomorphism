@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs/graphs/v15
+/build
+/build_ustav
+/.vscode
+*.sln
+*.vcxproj
+*.user
+/test.hpp
+/test.cpp
+/graphs.vcxproj.filters
+/Debug/graphs.tlog
+/Debug/Graph.obj
+/Debug
