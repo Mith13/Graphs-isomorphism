@@ -5,7 +5,7 @@
 #include <string>
 using std::map;
 
-// Prints an entire parttion
+// Prints an entire partition
 inline
 void printSet(partition set, std::string s = "")
 {
