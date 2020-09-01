@@ -26,8 +26,7 @@ if(g1.isIsomoprhic(g1))std::cout << "graph is isomorphic" << std::endl;
 else std::cout << "graph is not isomorphic" << std::endl;
 ```
 ## Author
-Jakub Lang
-
+J.L.
 ## License
 
  [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
